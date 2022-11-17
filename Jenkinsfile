@@ -1,7 +1,7 @@
 pipeline{
     agent any
     tools {
-      maven 'maven3'
+      maven 'MVN'
     }
     environment {
       DOCKER_TAG = getVersion()
@@ -10,7 +10,7 @@ pipeline{
         stage('SCM'){
             steps{
                 git credentialsId: 'github', 
-                    url: 'https://github.com/javahometech/dockeransiblejenkins'
+                    url: 'https://github.com/efrei-sanofi-testing/DevOPS_Projet.git'
             }
         }
         
@@ -22,17 +22,17 @@ pipeline{
         
         stage('Docker Build'){
             steps{
-                sh "docker build . -t kammana/hariapp:${DOCKER_TAG} "
+                sh "docker build . -t fmoncef/DevOpsLab:${DOCKER_TAG} "
             }
         }
         
         stage('DockerHub Push'){
             steps{
-                withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
-                    sh "docker login -u kammana -p ${dockerHubPwd}"
+                withCredentials([string(credentialsId: 'moncef.fahssi@efrei.net', variable: 'testefrei!')]) {
+                    sh "docker login -u fmoncef -p ${dockerHubPwd}"
                 }
                 
-                sh "docker push kammana/hariapp:${DOCKER_TAG} "
+                sh "docker push fmoncef/DevOpsLab:${DOCKER_TAG} "
             }
         }
         
